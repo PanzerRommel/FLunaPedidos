@@ -1,0 +1,64 @@
+﻿@model ML.Producto
+
+@{
+    ViewBag.Title = "Form";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row justify-content-center align-items-center">
+        <div class="col-sm-6">
+            <div class="card">
+                <h5 class="card-header text-center">Formulario</h5>
+                <div class="card-body">
+                    <h5 class="card-title">Agrega un nuevo producto</h5>
+                     <div class="col-md-12">
+                        @using(Html.BeginForm("Form", "Producto", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                        {
+                            <div class="form-group">
+                                @Html.HiddenFor(model => model.IdProducto)
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Codigo)
+                                <div class="input-group">
+                                  <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                   @Html.TextBoxFor(model => model.Codigo, new { @class = "form-control", @id = "txtCodigo"})
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Nombre)
+                                <div class="input-group">
+                                  <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                   @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control", @id = "txtNombre"})
+                                </div>
+                            </div>
+
+                             <div class="form-group">
+                                @Html.LabelFor(model => model.Piezas)
+                                <div class="input-group">
+                                  <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                   @Html.TextBoxFor(model => model.Piezas, new { @class = "form-control", @id = "txtPiezas"})
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.PrecioUnitario)
+                                <div class="input-group">
+                                  <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                   @Html.TextBoxFor(model => model.PrecioUnitario, new { @class = "form-control", @id = "txtPrecioUnitario"})
+                                </div>
+                            </div>
+
+                           <div class="col-md-3 my-4">
+                               <input type="submit" value="Guardar" class="btn btn-success btn-block"/>
+                               @Html.ActionLink("Regresar", "GetAll", "Producto", null, new { @class = "btn btn-danger" })
+                           </div>
+                        }
+                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

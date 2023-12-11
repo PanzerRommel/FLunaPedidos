@@ -1,0 +1,68 @@
+﻿@model ML.Transaccion
+@{
+    ViewData["Title"] = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Usuario</h2>
+
+
+<div class="row">
+    <div class="col-md-12">
+        <h5>Transacciones</h5>
+    </div>
+</div>
+
+@*<div class ="row">*@
+<div style="float:right;">
+    @Html.ActionLink("Agregar ", "Form", "Transaccion", htmlAttributes: new {@class = "btn btn-success"})   
+</div>
+
+
+<table class="table table-bordered table-responsive">
+    <thead>
+        <tr>
+            <td>Editar</td>
+
+            <td class="visually-hidden">IdTransaccion</td>
+            <td>Fecha</td>
+@*            <td class="visually-hidden">IdUsuario</td>*@
+            <td>Usuario</td>
+@*            <td class="visually-hidden">IdProducto</td>*@
+            <td>Nombre del producto</td>
+            <td>Cantidad</td>
+            <td>TOTAL</td>
+            <td>Monto Ingresado</td>
+            <td>Cambio</td>
+
+            <td>Eliminar</td>
+        </tr>
+        </thead>
+    <tbody>
+        @foreach (ML.Transaccion transaccion in Model.Transacciones)
+        {
+            <tr>
+                <td><a class="btn btn-warning bi bi-pencil-square" href="@Url.Action("Form", "Transaccion", new { IdTransaccion = transaccion.IdTransaccion })"></a></td>
+
+                <td class="visually-hidden">@transaccion.IdTransaccion</td>
+                <td>@transaccion.Fecha</td>
+                @*<td class="visually-hidden">@transaccion.Usuario.IdUsuario</td>*@
+                <td>@transaccion.Usuario.Nombre</td>
+              @* <td class="visually-hidden">@transaccion.Producto.IdProducto</td>*@
+                <td>@transaccion.Producto.Nombre</td>
+                <td>@transaccion.Cantidad</td>
+                <td>@transaccion.Total</td>
+                <td>@transaccion.MontoIngresado</td>
+                <td>@transaccion.Cambio</td>
+
+
+               
+                <td>
+                    <a class="btn btn-danger bi bi-trash2" href="@Url.Action("Delete", "Transaccion", new {IdTransaccion = transaccion.IdTransaccion })" onclick="return confirm('Estas seguro que deseas eliminar este registro?');">   </a>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+
+</table>

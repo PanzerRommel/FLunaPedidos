@@ -1,0 +1,57 @@
+﻿@model ML.Producto
+
+@{
+     ViewData["Title"] = "GetAll";
+     Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row justify-content-center align-items-center">
+        <div class="col-sm-6">
+            <div class="card">
+                <h5 class="card-header text-center bg-info">Catalogo de Productos</h5>
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <table class="table table-bordered">
+
+                          <thead>
+                            <tr>
+                                <th scope="col" class="col-1">Editar</th>
+
+                                <th class="d-none col-1">IdProducto</th>
+                                <th scope="col" class="col-1">Codigo</th>
+                                <th scope="col" class="col-1">Nombre</th>
+                                <th scppe ="col" class="col-">Piezas</th>
+                                <th scope="col" class="col-1">Precio</th>
+
+                               <th scope="col" class="col-1">Eliminar</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            @foreach (ML.Producto producto in Model.Productos)
+                            {
+                                <tr>
+                                    <td><a class="btn btn-warning bi bi-pencil-square" href="@Url.Action("Form", "Producto", new { IdProducto = producto.IdProducto })"></a></td>
+                                    <td class="d-none">@producto.IdProducto</td>
+                                    <td>@producto.Codigo</td>
+                                    <td>@producto.Nombre</td>
+                                    <td>@producto.Piezas</td>
+                                    <td>@producto.PrecioUnitario</td>
+                                    <td>
+                                        <a class="btn btn-danger bi bi-trash2" href="@Url.Action("Delete", "Producto", new {IdProducto = producto.IdProducto })" onclick="return confirm('Estas seguro que deseas eliminar este registro?');"></a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                        </table>
+        
+                    </h5>
+                   
+                  <div style="float:right;">
+                    @Html.ActionLink("Agregar Producto", "Form", "Producto", htmlAttributes: new {@class = "btn btn-success"})   
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
