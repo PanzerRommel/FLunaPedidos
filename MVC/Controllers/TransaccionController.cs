@@ -63,10 +63,12 @@ namespace MVC.Controllers
                 if (result.Correct)
                 {
                     ViewBag.Mensaje = "Registro de manera existoso";
+                    return PartialView("Modal");
                 }
                 else
                 {
                     ViewBag.Mensaje = "Ocurrio un problema";
+                    return PartialView("Modal");
                 }
             }
             else
@@ -75,12 +77,13 @@ namespace MVC.Controllers
                 if (result.Correct)
                 {
                     ViewBag.Mensaje = "Actialiazacion con exito";
+                    return PartialView("Modal");
                 }
                 else
                 {
                     ViewBag.Mensaje = "Ocurrio un problema";
+                    return PartialView("Modal");
                 }
-                return PartialView("Modal");
             }
             return View(transaccion);
         }
@@ -90,7 +93,7 @@ namespace MVC.Controllers
             result = BL.Transaccion.Delete(IdTransaccion);
             if (result.Correct)
             {
-                ViewBag.Mensaje = "Usuario Eliminado con Éxito";
+                ViewBag.Mensaje = "Transaccion eliminada";
             }
             else
             {
@@ -99,19 +102,27 @@ namespace MVC.Controllers
             return PartialView("Modal");
         }
 
-        //[HttpGet]
-        //public ActionResult ObtenerPrecioProducto(int idProducto)
-        //{
-        //    using (DL.FlunaExpendedoraContext context = new DL.FlunaExpendedoraContext())
-        //    {
-        //        var precio = context.Productos
-        //            .Where(p => p.IdProducto == idProducto)
-        //            .Select(p => p.PrecioUnitario)
-        //            .FirstOrDefault();
+        [HttpGet]
+        public ActionResult ObtenerPrecio(int idProducto)
+        {
+            // Lógica para obtener el precio del producto con el id proporcionado
+            var precio = ObtenerPrecioDesdeBaseDeDatos(idProducto);
 
-        //        return Json(new { precio });
-        //    }
-        //}
+            return Json(precio);
+        }
+        private decimal ObtenerPrecioDesdeBaseDeDatos(int idProducto)
+        {
+            // Aquí deberías realizar la consulta a tu base de datos y devolver el precio
+            // Este es solo un ejemplo, debes implementarlo según tus necesidades
 
+            // Supongamos que tienes una entidad Producto con un DbSet<Producto> en tu DbContext
+            using (DL.FlunaExpendedoraContext context = new DL.FlunaExpendedoraContext())
+            {
+                var producto = context.Productos.FirstOrDefault(p => p.IdProducto == idProducto);
+
+                // Verificar si el producto existe y devolver su precio
+                return producto != null ? producto.PrecioUnitario : 0.0m;
+            }
+        }
     }
 }

@@ -141,26 +141,25 @@ namespace BL
             }
             return result;
         }
-        public static ML.Result Delete(int IdTransaccion)
+        public static ML.Result Delete(int Idtransaccion)
         {
             ML.Result result = new ML.Result();
             try
             {
                 using (DL.FlunaExpendedoraContext context = new DL.FlunaExpendedoraContext())
                 {
-                    var transaccion = context.Transacciones.FirstOrDefault(e => e.IdTransaccion == IdTransaccion);
-
-                    if (transaccion != null)
+                    var query = context.Database.ExecuteSqlRaw($"TransaccionDelete {Idtransaccion}");
+                    if (query >= 1)
                     {
-                        context.Transacciones.Remove(transaccion);
-                        context.SaveChanges();
                         result.Correct = true;
                     }
                     else
                     {
                         result.Correct = false;
-                        result.ErrorMessage = "No se encontró el empleado para eliminar.";
+                        result.ErrorMessage = "Error al Eliminar Registro";
                     }
+                    result.Correct = true;
+
                 }
             }
             catch (Exception ex)
@@ -168,7 +167,6 @@ namespace BL
                 result.Correct = false;
                 result.ErrorMessage = ex.Message;
             }
-
             return result;
         }
         public static ML.Result Update(ML.Transaccion transaccion)

@@ -20,79 +20,104 @@
     </div>
 
     <div class="row">
-        
-            @using (Html.BeginForm("Form", "Transaccion", FormMethod.Post, new { enctype = "multipart/form-data" }))
-            {
-                <div class="col-md-12">
-                    <div class="form-group">
-                        @Html.HiddenFor(model => model.IdTransaccion)
-                    </div>
-
-                    <div class="col-md-3 col-12 col-sm-6">
-                        @Html.LabelFor(model => model.Fecha)
-                        <div class="input-group">
-                            <span class="input-group-text" id="basic-addon"><i class="bi bi-calendar2-week"></i></span>
-                            @Html.TextBoxFor(model => model.Fecha, "{0:yyyy-MM-dd}", new { @class = "form-control", @id = "txtFecha", @readonly = "readonly" })
-                        </div>
-                    </div>
-
-
-                    <div class="col-md-4 col-12 col-sm-6">
-                        @Html.LabelFor(model => model.Usuario.IdUsuario, "Selecciona un usuario correspondiente")
-                        <div class="input-group">
-                            <span class="input-group-text" id="basic-addon"><i class="bi bi-people"></i></span>
-                            @Html.DropDownListFor(model => model.Usuario.IdUsuario, new SelectList(Model.Usuario.Usuarios, "IdUsuario", "Nombre"), "Selecciona un usuario correspondiente", new { @class = "form-control", @id = "ddlUsuario" })
-                        </div>
-                    </div>
-
-                    <div class="col-md-4 col-12 col-sm-6">
-                        @Html.LabelFor(model => model.Producto.IdProducto, "Selecciona un producto correspondiente")
-                        <div class="input-group">
-                            <span class="input-group-text" id="basic-addon"><i class="bi bi-people"></i></span>
-                            @Html.DropDownListFor(model => model.Producto.IdProducto, new SelectList(Model.Producto.Productos, "IdProducto", "Nombre"), "Selecciona un producto correspondiente", new { @class = "form-control", @id = "ddlProducto" })
-                        </div>
-                    </div>
-
-                    <div class="col-md-3 col-12 col-sm-6">
-                        @Html.LabelFor(model => model.Cantidad)
-                        <div class="input-group">
-                            <span class="input-group-text" id="basic-addon"><i class="bi bi-telephone"></i></span>
-                            <input type="number" class="form-control" id="txtCantidad" name="txtCantidad" min="1" step="1" />
-                        </div>
-                    </div>
-
-                    <div class="col-md-3 col-12 col-sm-6">
-                        @Html.LabelFor(model => model.Total)
-                        <div class="input-group">
-                            <span class="input-group-text" id="basic-addon"><i class="bi bi-telephone"></i></span>
-                            @Html.TextBoxFor(model => model.Total, new { @class = "form-control form-control-plaintext", @id = "txtTotal", @readonly = "readonly" })
-                        </div>
-                    </div>
-
-                    <div class="col-md-3 col-12 col-sm-6">
-                        @Html.LabelFor(model => model.MontoIngresado)
-                        <div class="input-group">
-                            <span class="input-group-text" id="basic-addon"><i class="bi bi-telephone"></i></span>
-                            @Html.TextBoxFor(model => model.MontoIngresado, new { @class = "form-control form-control-plaintext text-success", @id = "txtMontoIngresado", @readonly = "readonly" })
-                        </div>
-                    </div>
-
-                    <div class="col-md-3 col-12 col-sm-6">
-                        @Html.LabelFor(model => model.Cambio)
-                        <div class="input-group">
-                            <span class="input-group-text" id="basic-addon"><i class="bi bi-telephone"></i></span>
-                            @Html.TextBoxFor(model => model.Cambio, new { @class = "form-control form-control-plaintext text-danger", @id = "txtCambio", @readonly = "readonly" })
-                        </div>
-                    </div>
-
-
-
-                    <div class="col-md-3">
-                        <input type="submit" value="Guardar" class="btn btn-success" />
-                        @Html.ActionLink("Regresar", "GetAll", "Transacciones", null, new { @class = "btn btn-danger" })
+        @using (Html.BeginForm("Form", "Transaccion", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <div class="col-md-12">
+                <div class="form-group">
+                    @Html.HiddenFor(model => model.IdTransaccion)
+                </div>
+                <!-- Campo donde registra por automático la fecha del sistema -->
+                <div class="col-md-3 col-12 col-sm-6">
+                    @Html.LabelFor(model => model.Fecha)
+                    <div class="input-group">
+                        <span class="input-group-text" id="basic-addon"><i class="bi bi-calendar2-week"></i></span>
+                        @Html.TextBoxFor(model => model.Fecha, "{0:yyyy-MM-dd}", new { @class = "form-control", @id = "txtFecha", @readonly = "readonly" })
                     </div>
                 </div>
-            }
+
+                <!-- Dropdown para seleccionar el usuario -->
+                <div class="col-md-4 col-12 col-sm-6">
+                    @Html.LabelFor(model => model.Usuario.IdUsuario, "Selecciona un usuario correspondiente")
+                    <div class="input-group">
+                        <span class="input-group-text" id="basic-addon"><i class="bi bi-person"></i></span>
+                        @if (Model.Usuario != null && Model.Usuario.Usuarios != null && Model.Usuario.Usuarios.Any())
+                        {
+                            @Html.DropDownListFor(model => model.Usuario.IdUsuario, new SelectList(Model.Usuario.Usuarios, "IdUsuario", "Nombre"), "Selecciona un usuario correspondiente", new { @class = "form-control", @id = "ddlUsuario" })
+                        }
+                        else
+                        {
+                            <p>No hay usuarios disponibles.</p>
+                        }
+                    </div>
+                </div>
+
+                <!-- Dropdown para seleccionar el producto -->
+                <div class="col-md-4 col-12 col-sm-6">
+                    @Html.LabelFor(model => model.Producto.IdProducto, "Selecciona un producto correspondiente")
+                    <div class="input-group">
+                        <span class="input-group-text" id="basic-addon"><i class="bi bi-person"></i></span>
+                        @if (Model.Usuario != null && Model.Producto.Productos != null && Model.Producto.Productos.Any())
+                        {
+                            @Html.DropDownListFor(model => model.Producto.IdProducto, new SelectList(Model.Producto.Productos, "IdProducto", "Nombre"), "Selecciona un producto correspondiente", new { @class = "form-control", @id = "ddlProducto" })
+                        }
+                        else
+                        {
+                            <p>No hay productos disponibles.</p>
+                        }
+                    </div>
+                </div>
+
+                <!-- Campo de texto para mostrar el precio -->
+                <div class="col-md-3 col-12 col-sm-6">
+                    @Html.LabelFor(model => model.Producto.PrecioUnitario)
+                    <div class="input-group">
+                        <span class="input-group-text" id="basic-addon"><i class="bi bi-telephone"></i></span>
+                        @Html.TextBoxFor(model => model.Producto.PrecioUnitario, new { @class = "form-control form-control-plaintext text-danger", @id = "txtPrecio", @readonly = "readonly", @name = "" })
+                    </div>
+                </div>
+
+                <!-- Campo de texto para mostrar la Cantidad de productos a comprar -->
+                <div class="col-md-3 col-12 col-sm-6">
+                    @Html.LabelFor(model => model.Cantidad)
+                    <div class="input-group">
+                        <span class="input-group-text" id="basic-addon"><i class="bi bi-telephone"></i></span>
+                        @Html.TextBoxFor(model => model.Cantidad, new { @class = "form-control", @id = "txtCantidad", @min = "1", @step = "1" })
+                    </div>
+                </div>
+
+                <!-- Campo de texto para mostrar el TOTAL -->
+                <div class="col-md-3 col-12 col-sm-6">
+                    @Html.LabelFor(model => model.Total)
+                    <div class="input-group">
+                        <span class="input-group-text" id="basic-addon"><i class="bi bi-telephone"></i></span>
+                        @Html.TextBoxFor(model => model.Total, new { @class = "form-control form-control-plaintext", @id = "txtTotal", @readonly = "readonly" })
+                    </div>
+                </div>
+
+                <!-- Campo de texto para mostrar el Monto ingresado -->
+                <div class="col-md-3 col-12 col-sm-6">
+                    @Html.LabelFor(model => model.MontoIngresado)
+                    <div class="input-group">
+                        <span class="input-group-text" id="basic-addon"><i class="bi bi-telephone"></i></span>
+                        @Html.TextBoxFor(model => model.MontoIngresado, new { @class = "form-control form-control-plaintext text-success", @id = "txtMontoIngresado" })
+                    </div>
+                </div>
+
+                <!-- Campo de texto para mostrar el Cambio -->
+                <div class="col-md-3 col-12 col-sm-6">
+                    @Html.LabelFor(model => model.Cambio)
+                    <div class="input-group">
+                        <span class="input-group-text" id="basic-addon"><i class="bi bi-telephone"></i></span>
+                        @Html.TextBoxFor(model => model.Cambio, new { @class = "form-control form-control-plaintext text-danger", @id = "txtCambio", @readonly = "readonly" })
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <input type="submit" value="Guardar" class="btn btn-success" />
+                    @Html.ActionLink("Regresar", "GetAll", "Transaccion", null, new { @class = "btn btn-danger" })
+                </div>
+            </div>
+        }
     </div>
 </div>
 
@@ -106,37 +131,75 @@
 
         // Establecer la fecha actual en el campo de fecha
         document.getElementById("txtFecha").value = fechaActual;
-        
-        ////////////////////////////////////////////////////////////////////////////////
-            $(document).ready(function () {
-                $("#ddlProducto").change(function () {
-                    actualizarTotal();
-                });
 
-                $("#txtCantidad").on("input", function () {
-                    actualizarTotal();
-                });
+        // Función para actualizar el precio cuando cambia el producto seleccionado
+        $('#ddlProducto').change(function () {
+            var precio = obtenerPrecio($(this).val());
+            $('#txtPrecio').val(precio);
+        });
 
-                function actualizarTotal() {
-                    var idProducto = $("#ddlProducto").val();
-                    var cantidad = $("#txtCantidad").val();
-
-                    // Hacer la petición AJAX para obtener el precio del producto
-                    $.ajax({
-                        url: '/Ejemplo/ObtenerInformacion',  // Reemplaza con la ruta correcta de tu controlador
-                        type: 'GET',
-                        data: { idProducto: idProducto },
-                        success: function (data) {
-                            // Calcular el total y actualizar el campo Total
-                            var precioUnitario = data.Precio || 0;
-                            var total = precioUnitario * cantidad;
-                            $("#txtTotal").val(total.toFixed(2));
-                        },
-                        error: function (xhr, status, error) {
-                            console.error('Error en la llamada AJAX:', status, error);
-                        }
-                    });
+        function obtenerPrecio(idProducto) {
+            $.ajax({
+                url: '/Transaccion/ObtenerPrecio',
+                type: 'GET',
+                data: { idProducto: idProducto },
+                success: function (precioUnitario) {
+                    // El servidor respondió correctamente
+                    $('#txtPrecio').val(precioUnitario);
+                    // Calcular el total después de obtener el precio
+                    calcularTotal();
+                },
+                error: function () {
+                    // Manejar los errores si la llamada AJAX no fue exitosa
+                    console.error('Error en la llamada AJAX');
                 }
             });
+        }
+
+        // Función para calcular el total cuando cambia la cantidad
+        $('#txtCantidad').on('input', function () {
+            calcularTotal();
+        });
+
+        // Función para calcular el total
+        function calcularTotal() {
+            // Obtener la cantidad y el precio unitario
+            var cantidad = parseInt($('#txtCantidad').val()) || 0;
+            var precioUnitario = parseFloat($('#txtPrecio').val()) || 0.0;
+
+            // Calcular el total
+            var total = cantidad * precioUnitario;
+
+            // Mostrar el total en el campo correspondiente
+            $('#txtTotal').val(total.toFixed(2)); // Ajusta según la precisión que desees
+        }
+
+        // Función para calcular el cambio cuando cambia el monto ingresado
+        $('#txtMontoIngresado').on('input', function () {
+            calcularCambio();
+        });
+
+        // Función para calcular el cambio
+        function calcularCambio() {
+            // Obtener el monto ingresado y el total
+            var montoIngresado = parseFloat($('#txtMontoIngresado').val()) || 0.0;
+            var total = parseFloat($('#txtTotal').val()) || 0.0;
+
+            // Validar que el monto ingresado sea mayor o igual al total
+            if (montoIngresado >= total) {
+                // Calcular el cambio
+                var cambio = montoIngresado - total;
+
+                // Mostrar el cambio en el campo correspondiente
+                $('#txtCambio').val(cambio.toFixed(2)); // Ajusta según la precisión que desees
+            } else {
+                // Si el monto ingresado es menor al total, mostrar cambio como 0
+                $('#txtCambio').val('0.00');
+            }
+        }
+
+        // Llamar a la función al cargar la página para establecer el total inicial y el cambio inicial
+        calcularTotal();
+        calcularCambio();
     </script>
 }
