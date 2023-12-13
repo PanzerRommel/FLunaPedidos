@@ -176,7 +176,22 @@ namespace BL
             {
                 using (DL.FlunaExpendedoraContext context = new DL.FlunaExpendedoraContext())
                 {
-                    var query = context.Database.ExecuteSqlRaw($"TransaccionUpdate {transaccion.IdTransaccion} , {transaccion.Usuario.IdUsuario} , {transaccion.Producto.IdProducto} , {transaccion.Cantidad}, {transaccion.MontoIngresado}");
+                    // Puedes usar ExecuteSqlRaw para ejecutar un procedimiento almacenado de actualización
+                    var query = context.Database.ExecuteSqlRaw(
+                        "EXEC TransaccionUpdate @IdTransaccion, @Fecha, @IdUsuario, @IdProducto, @Cantidad, @MontoIngresado, @Cambio OUTPUT",
+                        new SqlParameter("@IdTransaccion", transaccion.IdTransaccion),
+                        new SqlParameter("@Fecha", transaccion.Fecha),  // Agregado el parámetro @Fecha
+                        new SqlParameter("@IdUsuario", transaccion.Usuario.IdUsuario),
+                        new SqlParameter("@IdProducto", transaccion.Producto.IdProducto),
+                        new SqlParameter("@Cantidad", transaccion.Cantidad),
+                        new SqlParameter("@MontoIngresado", transaccion.MontoIngresado != null ? transaccion.MontoIngresado : (object)DBNull.Value),
+                        new SqlParameter("@Cambio", SqlDbType.Decimal)
+                        {
+                            Direction = ParameterDirection.Output
+                        }
+                    );
+
+
                     if (query >= 1)
                     {
                         result.Correct = true;
@@ -184,10 +199,8 @@ namespace BL
                     else
                     {
                         result.Correct = false;
-                        result.ErrorMessage = "No se inserto el registro";
-
+                        result.ErrorMessage = "No se actualizó el registro";
                     }
-                    result.Correct = true;
                 }
             }
             catch (Exception ex)
@@ -197,5 +210,6 @@ namespace BL
             }
             return result;
         }
+
     }
 }
